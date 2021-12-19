@@ -12,6 +12,8 @@ function App() {
   const [episodes, setEpisodes] = useState([]);
   const [filterByRating, setFilterByRating] = useState("");
 
+  //console.log(searchTerm)
+
   useEffect(() => {
     Adapter.getShows().then((shows) => setShows(shows));
   }, []);
@@ -24,13 +26,17 @@ function App() {
     setSearchTerm(e.target.value.toLowerCase());
   }
 
-  function handleFilter(e) {
-    e.target.value === "No Filter"
+  function handleFilter(input) {
+    //console.log(input)
+    input === "No Filter"
       ? setFilterByRating("")
-      : setFilterByRating(e.target.value);
+      : setFilterByRating(input);
   }
 
+  //console.log(filterByRating)
+
   function selectShow(show) {
+    //console.log(show)
     Adapter.getShowEpisodes(show.id).then((episodes) => {
       setSelectedShow(show);
       setEpisodes(episodes);
@@ -40,7 +46,7 @@ function App() {
   let displayShows = shows;
   if (filterByRating) {
     displayShows = displayShows.filter((s) => {
-      s.rating.average >= filterByRating;
+      return  s.rating.average >= filterByRating ;
     });
   }
 
@@ -50,6 +56,7 @@ function App() {
         handleFilter={handleFilter}
         handleSearch={handleSearch}
         searchTerm={searchTerm}
+        filterByRating={filterByRating}
       />
       <Grid celled>
         <Grid.Column width={5}>
